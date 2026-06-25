@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Samurai Slash</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Main game canvas. Everything visual is drawn here with JS, no images. -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- ===================== HUD (heads-up display) ===================== -->
+  <div id="hud">
+    <div id="hpContainer">
+      <span class="hudLabel">体力 &nbsp;HP</span>
+      <div id="hpBarOuter">
+        <div id="hpBarInner"></div>
+      </div>
+    </div>
+
+    <div id="statsContainer">
+      <div class="statRow">
+        <span class="hudLabel">Score</span>
+        <span id="scoreValue" class="hudValue">0</span>
+      </div>
+      <div class="statRow">
+        <span class="hudLabel">Kills</span>
+        <span id="killsValue" class="hudValue">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== Start screen ===================== -->
+  <div id="startScreen" class="overlay">
+    <h1>
+      侍斬り
+      <span class="subtitle">SAMURAI&nbsp;SLASH</span>
+    </h1>
+    <p class="instructions">
+      Move with <b>WASD</b> or <b>Arrow Keys</b><br />
+      Aim with the <b>mouse</b> &mdash; <b>Left Click</b> to slash<br /><br />
+      On mobile: drag the <b>joystick</b> to move, tap <b>斬</b> to attack<br /><br />
+      The night is full of oni. Survive as long as you can.
+    </p>
+    <button id="startBtn" class="actionBtn">始める &nbsp;Begin</button>
+  </div>
+
+  <!-- ===================== Game over screen ===================== -->
+  <div id="gameOverScreen" class="overlay hidden">
+    <h1 class="gameOverTitle">
+      討ち死に
+      <span class="subtitle">YOU&nbsp;HAVE&nbsp;FALLEN</span>
+    </h1>
+    <p id="finalStats" class="instructions"></p>
+    <button id="restartBtn" class="actionBtn">再戦 &nbsp;Restart</button>
+  </div>
+
+  <!-- ===================== Mobile touch controls ===================== -->
+  <!-- Hidden on desktop via CSS; shown only when JS detects a touch device. -->
+  <div id="mobileControls">
+    <div id="joystickBase">
+      <div id="joystickKnob"></div>
+    </div>
+    <button id="attackBtn" aria-label="Attack">斬</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

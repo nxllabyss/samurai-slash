@@ -1,0 +1,285 @@
+/* =====================================================================
+   SAMURAI SLASH — style.css
+   Japanese night theme: deep indigo sky, blood red accents, soft gold.
+   ===================================================================== */
+
+:root {
+  --bg-deep:      #05060d;
+  --bg-mid:       #0d1224;
+  --ink:          #0a0d16;
+  --moon:         #f4ecd8;
+  --blood:        #c1272d;
+  --blood-dark:   #7a1014;
+  --gold:         #d4af37;
+  --sakura:       #f7b6c2;
+  --panel-bg:     rgba(8, 10, 18, 0.55);
+  --panel-border: rgba(212, 175, 55, 0.4);
+
+  --font-display: 'Hiragino Mincho ProN', 'Yu Mincho', 'MS Mincho', 'Noto Serif JP', Georgia, 'Times New Roman', serif;
+  --font-ui:       'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-deep);
+  overflow: hidden;
+  font-family: var(--font-ui);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* ===================== Canvas ===================== */
+
+#gameCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  background: var(--bg-deep);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+body.touch-device #gameCanvas {
+  cursor: default;
+}
+
+/* ===================== HUD ===================== */
+
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 20px;
+  pointer-events: none; /* clicks pass through to the canvas underneath */
+  z-index: 5;
+}
+
+.hudLabel {
+  font-family: var(--font-display);
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+}
+
+.hudValue {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  color: var(--moon);
+  font-size: 1rem;
+  margin-left: 10px;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+}
+
+#hpContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  backdrop-filter: blur(2px);
+}
+
+#hpBarOuter {
+  width: 220px;
+  height: 16px;
+  border: 2px solid var(--gold);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+#hpBarInner {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--blood-dark), var(--blood));
+  transition: width 0.15s linear;
+}
+
+#statsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 8px 14px;
+  backdrop-filter: blur(2px);
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+}
+
+/* ===================== Overlays (start / game over) ===================== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 24px;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(13, 18, 36, 0.85) 0%, rgba(2, 3, 7, 0.96) 75%);
+  z-index: 10;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 9vw, 4.2rem);
+  color: var(--moon);
+  margin: 0;
+  line-height: 1.15;
+  text-shadow: 0 0 18px rgba(193, 39, 45, 0.55), 0 0 4px rgba(0, 0, 0, 0.9);
+}
+
+.gameOverTitle {
+  color: var(--blood) !important;
+  text-shadow: 0 0 22px rgba(193, 39, 45, 0.8), 0 0 4px rgba(0, 0, 0, 0.9) !important;
+}
+
+.overlay .subtitle {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-ui);
+  font-size: 0.32em;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+
+.instructions {
+  font-family: var(--font-ui);
+  line-height: 1.7;
+  color: rgba(244, 236, 216, 0.85);
+  max-width: 460px;
+  font-size: 1rem;
+}
+
+.actionBtn {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+  padding: 14px 36px;
+  color: var(--moon);
+  background: linear-gradient(180deg, var(--blood) 0%, var(--blood-dark) 100%);
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 0 0 rgba(212, 175, 55, 0);
+}
+
+.actionBtn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(193, 39, 45, 0.45);
+}
+
+.actionBtn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ===================== Mobile controls ===================== */
+
+#mobileControls {
+  display: none; /* shown only for touch devices, see body.touch-device below */
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+
+body.touch-device #mobileControls {
+  display: block;
+}
+
+#joystickBase {
+  position: fixed;
+  left: 28px;
+  bottom: 28px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(20, 22, 32, 0.45);
+  border: 2px solid var(--panel-border);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+#joystickKnob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  margin-left: -25px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.75);
+  border: 2px solid rgba(244, 236, 216, 0.6);
+  transition: transform 0.04s linear;
+}
+
+#attackBtn {
+  position: fixed;
+  right: 30px;
+  bottom: 36px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--blood) 0%, var(--blood-dark) 100%);
+  border: 3px solid var(--gold);
+  color: var(--moon);
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  touch-action: none;
+  box-shadow: 0 0 16px rgba(193, 39, 45, 0.5);
+}
+
+#attackBtn:active {
+  transform: scale(0.92);
+}
+
+/* ===================== Small screens ===================== */
+
+@media (max-width: 480px) {
+  #hpBarOuter {
+    width: 140px;
+  }
+  .hudLabel {
+    font-size: 0.7rem;
+  }
+  .hudValue {
+    font-size: 0.85rem;
+  }
+  .instructions {
+    font-size: 0.9rem;
+  }
+}
